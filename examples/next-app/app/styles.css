@@ -1,0 +1,27 @@
+* { box-sizing: border-box; }
+body { margin: 0; background: #f4f6f8; color: #17202a; font-family: ui-sans-serif, system-ui, sans-serif; }
+.page-shell { width: min(100% - 32px, 620px); margin: 8vh auto; }
+.intro { margin-bottom: 28px; }
+.eyebrow { color: #526273; font-size: 12px; font-weight: 700; letter-spacing: .12em; }
+h1 { margin: 10px 0; font-size: clamp(28px, 5vw, 40px); line-height: 1.1; }
+.intro > p:last-child { color: #526273; line-height: 1.6; }
+.flow-list { display: grid; gap: 8px; padding-left: 22px; color: #526273; font-size: 14px; line-height: 1.5; }
+form { display: grid; gap: 18px; padding: 28px; background: white; border: 1px solid #dce2e8; border-radius: 12px; box-shadow: 0 10px 30px rgb(24 39 56 / 6%); }
+label { display: grid; gap: 7px; font-size: 14px; font-weight: 650; }
+input:not([type="hidden"]), textarea { width: 100%; padding: 11px 12px; border: 1px solid #bdc7d1; border-radius: 7px; font: inherit; }
+textarea { min-height: 130px; resize: vertical; }
+button { min-height: 44px; border: 0; border-radius: 7px; background: #145b8c; color: white; font: inherit; font-weight: 700; cursor: pointer; }
+button:disabled { opacity: .6; cursor: wait; }
+[role="alert"] { margin: 0; color: #a12525; font-size: 14px; }
+[role="status"] { margin: 0; color: #17633c; font-size: 14px; }
+.debug-panel { margin-top: 18px; padding: 22px 26px; background: #fff; border: 1px solid #dce2e8; border-radius: 12px; color: #526273; font-size: 14px; line-height: 1.55; }
+.debug-panel h2 { margin: 0 0 14px; color: #17202a; font-size: 18px; }
+.debug-panel h3 { margin: 16px 0 8px; color: #263747; font-size: 14px; }
+.debug-panel p { margin: 6px 0; }
+.signal-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0; }
+.signal-grid > div { padding: 10px 12px; border-radius: 7px; background: #f4f6f8; }
+.signal-grid dt { font-size: 12px; }
+.signal-grid dd { margin: 2px 0 0; color: #17202a; font-weight: 700; }
+.debug-note { margin-top: 12px !important; padding: 10px 12px; border-left: 3px solid #d3a83b; background: #fff9e9; color: #5b4a1d; }
+.behavior-captcha-trap { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden !important; clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; }
+@media (max-width: 520px) { form { padding: 20px; } .signal-grid { grid-template-columns: 1fr 1fr; } }
