@@ -1,9 +1,7 @@
-import type { BehaviorTelemetry } from "../shared/types";
+import type { BehaviorTelemetry } from "../shared/types.js";
 
 export interface RiskConfig {
   fastSubmitMs: number;
-  challengeThreshold: number;
-  blockThreshold: number;
   longTextThreshold: number;
   fastSubmitPoints: number;
   noInteractionPoints: number;
@@ -12,8 +10,6 @@ export interface RiskConfig {
 
 export const DEFAULT_RISK_CONFIG: Readonly<RiskConfig> = {
   fastSubmitMs: 1_500,
-  challengeThreshold: 50,
-  blockThreshold: 90,
   longTextThreshold: 80,
   fastSubmitPoints: 35,
   noInteractionPoints: 60,

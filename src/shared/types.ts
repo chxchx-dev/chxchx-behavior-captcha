@@ -27,7 +27,7 @@ export type ActionResult =
       challenge: { token: string; nonce: string; salt: string; difficulty: number; expiresAt: number };
       diagnostics?: RiskDiagnostics;
     }
-  | { status: "blocked"; reason: "honeypot" | "risk" | "invalid_challenge" }
+  | { status: "blocked"; reason: "honeypot" | "risk" | "invalid_challenge" | "invalid_input" }
   | { status: "error"; message: string };
 
 export interface ChallengeStore {

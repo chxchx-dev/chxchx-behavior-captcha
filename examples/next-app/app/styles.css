@@ -12,6 +12,10 @@ input:not([type="hidden"]), textarea { width: 100%; padding: 11px 12px; border: 
 textarea { min-height: 130px; resize: vertical; }
 button { min-height: 44px; border: 0; border-radius: 7px; background: #145b8c; color: white; font: inherit; font-weight: 700; cursor: pointer; }
 button:disabled { opacity: .6; cursor: wait; }
+.secondary-button { min-height: 40px; padding: 0 14px; background: #e8eef3; color: #17415f; justify-self: start; }
+.behavior-captcha-fallback { color: #263747; font-size: 14px; line-height: 1.5; }
+.behavior-captcha-fallback summary { width: fit-content; min-height: 44px; padding: 10px 0; color: #145b8c; font-weight: 700; cursor: pointer; }
+.behavior-captcha-fallback p { margin: 6px 0; }
 [role="alert"] { margin: 0; color: #a12525; font-size: 14px; }
 [role="status"] { margin: 0; color: #17633c; font-size: 14px; }
 .debug-panel { margin-top: 18px; padding: 22px 26px; background: #fff; border: 1px solid #dce2e8; border-radius: 12px; color: #526273; font-size: 14px; line-height: 1.55; }

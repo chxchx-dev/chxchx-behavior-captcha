@@ -1,5 +1,5 @@
 import { createHash, createHmac, randomBytes, timingSafeEqual } from "node:crypto";
-import type { ChallengeStore } from "../shared/types";
+import type { ChallengeStore } from "../shared/types.js";
 
 interface ProofPayload {
   v: 1;
@@ -7,13 +7,23 @@ interface ProofPayload {
   salt: string;
   difficulty: number;
   expiresAt: number;
+  scopeBinding: string;
+  requestBinding: string;
 }
 
 export interface ProofOfWorkConfig {
   secret: string;
+  /** Server-derived endpoint plus session/account scope. Never take this directly from form data. */
+  scope: string;
+  /** SHA-256 digest of the original submission, excluding proof fields. */
+  requestHash: string;
   difficultyBits?: number;
   ttlMs?: number;
   now?: () => number;
+}
+
+function bindValue(secret: string, label: string, value: string): string {
+  return createHmac("sha256", secret).update(`${label}\0${value}`).digest("base64url");
 }
 
 function sign(encodedPayload: string, secret: string): string {
@@ -42,6 +52,8 @@ export function createProofOfWork(config: ProofOfWorkConfig): {
   expiresAt: number;
 } {
   if (config.secret.length < 32) throw new Error("Proof secret must contain at least 32 characters.");
+  if (!config.scope || config.scope.length > 512) throw new Error("Proof scope must contain between 1 and 512 characters.");
+  if (!/^[A-Za-z0-9_-]{43}$/.test(config.requestHash)) throw new Error("Proof request hash is invalid.");
   const difficulty = config.difficultyBits ?? 16;
   if (!Number.isInteger(difficulty) || difficulty < 8 || difficulty > 24) {
     throw new Error("Proof difficulty must be between 8 and 24 bits.");
@@ -52,6 +64,8 @@ export function createProofOfWork(config: ProofOfWorkConfig): {
     salt: randomBytes(16).toString("base64url"),
     difficulty,
     expiresAt: (config.now?.() ?? Date.now()) + (config.ttlMs ?? 2 * 60_000),
+    scopeBinding: bindValue(config.secret, "scope", config.scope),
+    requestBinding: bindValue(config.secret, "request", config.requestHash),
   };
   const encoded = Buffer.from(JSON.stringify(payload)).toString("base64url");
   return { token: `${encoded}.${sign(encoded, config.secret)}`, ...payload };
@@ -61,10 +75,15 @@ export async function verifyProofOfWork(input: {
   token: string;
   counter: string;
   secret: string;
+  /** Must be recalculated from trusted server-side endpoint/session data. */
+  scope: string;
+  /** Must be recalculated from the submitted data, excluding proof fields. */
+  requestHash: string;
   store: ChallengeStore;
   now?: () => number;
 }): Promise<boolean> {
-  if (input.secret.length < 32 || input.token.length > 2_048 || !/^\d{1,16}$/.test(input.counter)) return false;
+  if (input.secret.length < 32 || input.token.length > 2_048 || !/^\d{1,16}$/.test(input.counter) ||
+      !input.scope || input.scope.length > 512 || !/^[A-Za-z0-9_-]{43}$/.test(input.requestHash)) return false;
   const [encoded, suppliedSignature, extra] = input.token.split(".");
   if (!encoded || !suppliedSignature || extra !== undefined) return false;
 
@@ -82,7 +101,9 @@ export async function verifyProofOfWork(input: {
   if (payload.v !== 1 || typeof payload.nonce !== "string" || payload.nonce.length > 128 ||
       typeof payload.salt !== "string" || payload.salt.length > 128 ||
       !Number.isInteger(payload.difficulty) || payload.difficulty < 8 || payload.difficulty > 24 ||
-      !Number.isSafeInteger(payload.expiresAt) || payload.expiresAt <= now) return false;
+      !Number.isSafeInteger(payload.expiresAt) || payload.expiresAt <= now ||
+      payload.scopeBinding !== bindValue(input.secret, "scope", input.scope) ||
+      payload.requestBinding !== bindValue(input.secret, "request", input.requestHash)) return false;
 
   const counter = Number(input.counter);
   if (!Number.isSafeInteger(counter) || counter < 0) return false;

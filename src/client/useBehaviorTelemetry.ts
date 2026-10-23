@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
-import type { BehaviorTelemetry } from "../shared/types";
+import type { BehaviorTelemetry } from "../shared/types.js";
 
 export interface BehaviorTelemetryOptions {
   mouseThrottleMs?: number;

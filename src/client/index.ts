@@ -1,7 +1,8 @@
-export { BehaviorForm } from "./BehaviorForm";
-export type { BehaviorFormProps } from "./BehaviorForm";
-export { useBehaviorTelemetry } from "./useBehaviorTelemetry";
-export type { BehaviorTelemetryOptions } from "./useBehaviorTelemetry";
-export { withBehaviorFormData, withBehaviorPayload } from "./packTelemetry";
-export { solveProofOfWork } from "./solveProofOfWork";
-export type { ProofChallenge } from "./solveProofOfWork";
+export { BehaviorForm } from "./BehaviorForm.js";
+export type { BehaviorFormProps } from "./BehaviorForm.js";
+export { useBehaviorTelemetry } from "./useBehaviorTelemetry.js";
+export type { BehaviorTelemetryOptions } from "./useBehaviorTelemetry.js";
+export { withBehaviorFormData, withBehaviorPayload } from "./packTelemetry.js";
+export { solveProofOfWork } from "./solveProofOfWork.js";
+export { ProofSolveError } from "./solveProofOfWork.js";
+export type { ProofChallenge, ProofSolveFailureReason, ProofSolveOptions, ProofSolveStats } from "./solveProofOfWork.js";

@@ -2,3 +2,5 @@ node_modules/
 .next/
 *.tsbuildinfo
 examples/next-app/.env.local
+.data/
+dist/

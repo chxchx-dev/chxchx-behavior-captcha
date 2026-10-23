@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { BehaviorTelemetry, RiskDiagnostics } from "../../src/shared/types";
+import type { ProofSolveFailureReason } from "../../src/client/solveProofOfWork";
 import { BehaviorForm } from "../../src/client/BehaviorForm";
 import { submitContact } from "./actions";
 
@@ -11,18 +12,70 @@ const signalNames: Record<string, string> = {
   text_without_keypresses: "Texto extenso sin pulsaciones de teclado",
 };
 
+const proofFailureNames: Record<ProofSolveFailureReason, string> = {
+  cancelled: "se detuvo a petición del usuario",
+  timeout: "superó el tiempo máximo",
+  expired: "caducó antes de completarse",
+  unavailable: "no está disponible en este navegador",
+  invalid_challenge: "recibió datos no válidos",
+};
+
+interface ProofSample {
+  outcome: "solved" | "interrupted";
+  elapsedMs: number;
+}
+
+function summarizeProofTimes(samples: ProofSample[]) {
+  const sorted = samples
+    .filter((sample) => sample.outcome === "solved")
+    .map((sample) => sample.elapsedMs)
+    .sort((left, right) => left - right);
+  if (sorted.length === 0) return undefined;
+
+  const middle = Math.floor(sorted.length / 2);
+  const median = sorted.length % 2 === 0
+    ? Math.round((sorted[middle - 1]! + sorted[middle]!) / 2)
+    : sorted[middle]!;
+  const p95 = sorted[Math.ceil(sorted.length * 0.95) - 1]!;
+  return { count: sorted.length, median, p95 };
+}
+
 export function ContactForm() {
   const [telemetry, setTelemetry] = useState<BehaviorTelemetry | null>(null);
   const [diagnostics, setDiagnostics] = useState<RiskDiagnostics | undefined>();
-  const [proof, setProof] = useState<{ counter: number; attempts: number; elapsedMs: number } | null>(null);
+  const [proof, setProof] = useState<
+    | { status: "solved"; counter: number; attempts: number; elapsedMs: number }
+    | { status: "interrupted"; reason: ProofSolveFailureReason; attempts: number; elapsedMs: number }
+    | null
+  >(null);
+  const [proofSamples, setProofSamples] = useState<ProofSample[]>([]);
+  const proofSummary = summarizeProofTimes(proofSamples);
+
+  function recordProofSample(sample: ProofSample) {
+    setProofSamples((current) => [...current, sample].slice(-200));
+  }
 
   return (
     <>
       <BehaviorForm
         action={submitContact}
+        proofTimeoutMs={15_000}
+        proofFallback={(
+          <p>
+            Esta demo no tiene una ruta alternativa conectada. En una integración real, ofrece aquí una solicitud de
+            revisión manual o un canal accesible de soporte que mantenga controles de abuso.
+          </p>
+        )}
         onTelemetry={setTelemetry}
         onDiagnostics={setDiagnostics}
-        onProofSolved={setProof}
+        onProofSolved={(result) => {
+          setProof({ status: "solved", ...result });
+          recordProofSample({ outcome: "solved", elapsedMs: result.elapsedMs });
+        }}
+        onProofInterrupted={(stats) => {
+          setProof({ status: "interrupted", ...stats });
+          recordProofSample({ outcome: "interrupted", elapsedMs: stats.elapsedMs });
+        }}
       >
         <label>
           Nombre
@@ -34,7 +87,7 @@ export function ContactForm() {
         </label>
       </BehaviorForm>
 
-      <section className="debug-panel" aria-live="polite">
+      <section className="debug-panel">
         <h2>Qué pasó en el último envío</h2>
         {!telemetry ? (
           <p>Envía el formulario para ver las señales observadas y el resultado de cada paso.</p>
@@ -56,11 +109,31 @@ export function ContactForm() {
 
             <h3>3. Prueba de trabajo local</h3>
             <p>
-              {proof
-                ? `El navegador encontró un contador tras ${proof.attempts.toLocaleString()} intentos (${proof.elapsedMs} ms). El servidor verificó la solución y aceptó el reto.`
-                : "Se está calculando o aún no se ha solicitado el reto."}
+              {proof?.status === "solved"
+                ? `El navegador encontró una solución tras ${proof.attempts.toLocaleString()} intentos (${proof.elapsedMs} ms). El resultado del envío aparece arriba.`
+                : proof?.status === "interrupted"
+                  ? `La prueba ${proofFailureNames[proof.reason]} tras ${proof.attempts.toLocaleString()} intentos y ${proof.elapsedMs} ms.`
+                  : "Se está calculando o aún no se ha solicitado el reto."}
             </p>
             <p className="debug-note">La demo fuerza el reto en cada envío para mostrar este paso. En una integración real, el servidor lo activa según el umbral de riesgo.</p>
+
+            <h3>4. Medición local de coste</h3>
+            <p>
+              {proofSummary
+                ? `${proofSummary.count} soluciones: mediana ${proofSummary.median} ms, p95 ${proofSummary.p95} ms; ${proofSamples.filter((sample) => sample.outcome === "interrupted").length} interrupciones.`
+                : "Aún no hay soluciones registradas en esta pestaña."}
+            </p>
+            <p>Las mediciones viven solo en esta pestaña. Recoge al menos 100 soluciones por dispositivo para tener una referencia inicial del p95.</p>
+            <button
+              type="button"
+              className="secondary-button"
+              onClick={() => {
+                setProofSamples([]);
+                setProof(null);
+              }}
+            >
+              Limpiar mediciones
+            </button>
           </>
         )}
       </section>

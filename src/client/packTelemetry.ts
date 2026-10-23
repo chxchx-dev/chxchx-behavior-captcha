@@ -1,5 +1,5 @@
-import { BEHAVIOR_FIELD } from "../shared/types";
-import type { BehaviorTelemetry } from "../shared/types";
+import { BEHAVIOR_FIELD } from "../shared/types.js";
+import type { BehaviorTelemetry } from "../shared/types.js";
 
 /** Adds a JSON-encoded telemetry field to a copy of FormData. */
 export function withBehaviorFormData(formData: FormData, telemetry: BehaviorTelemetry): FormData {
