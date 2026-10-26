@@ -118,4 +118,4 @@ node ./node_modules/@chxchx/behavior-captcha/bin/prune-expired.mjs
 
 En Windows PowerShell, define esas variables en el entorno del job y ejecuta `node .\node_modules\@chxchx\behavior-captcha\bin\prune-expired.mjs`. El comando imprime únicamente el número de buckets y nonces eliminados. No lo ejecutes por cada solicitud.
 
-Planifica la frecuencia del job, backups, restauración, monitorización de disco y los registros del proxy/framework. La librería no controla las cabeceras o direcciones que otros componentes puedan escribir en sus logs.
+Planifica la frecuencia del job, backups, restauración, monitorización de disco y los registros del proxy/framework. Como mínimo, alerta si la limpieza falla o no corre a tiempo, observa el espacio libre y el tamaño del archivo, y prueba la restauración de un backup. Define cuánto tiempo se conservan datos y logs en el hosting; evita registrar secretos, cuerpos de formularios o tokens de reto. La librería no controla las cabeceras o direcciones que otros componentes puedan escribir en sus logs.

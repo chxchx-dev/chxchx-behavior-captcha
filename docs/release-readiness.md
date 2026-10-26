@@ -9,17 +9,18 @@ Estado al 26 de octubre de 2026. Typecheck, pruebas (9 casos), build de la demo 
 - Demo local con mediciones que permanecen en la pestaña y ejemplo de cancelación del reto.
 - Comando `behavior-captcha-prune` para quitar buckets y nonces vencidos en una ejecución programada.
 - Pruebas automatizadas para replay, cambios del formulario, políticas de reto, límites de entrada, rate limits y persistencia/concurrencia de SQLite.
-- CI configurada para tipos, pruebas, build de la demo y smoke test del tarball en Node 22.13 y 24; falta que GitHub la ejecute en un push o PR.
+- CI configurada para tipos, pruebas, build de la demo y smoke test del tarball en Node 22.13 y 24. El push a `dev` sí la activó, pero ambos jobs terminaron antes del primer paso: GitHub no asignó runner ni generó logs. [Run de Actions](https://github.com/chxchx-dev/chxchx-behavior-captcha/actions/runs/40410532396).
 - Smoke test local exitoso: construye el paquete, lo instala en una app Next.js temporal y revisa exports, tipos, CSS, docs y licencia.
+- Protocolo documentado para reunir mediciones locales por dispositivo y navegador; aún faltan los equipos objetivo y los resultados reales.
 - Pasos para ejecutar localmente en el [README](../README.md), documentación de integración y límites de seguridad.
 - Licencia MIT y metadato `license` del paquete.
 
 ## No declarar lista la v1 todavía
 
-- **CI aún no se ha ejecutado en GitHub.** Las pruebas, el typecheck, el build de la demo y el smoke test pasaron localmente en Node 22.23.4; Next.js mostró solo avisos de caché de webpack durante el build. Falta el resultado de la matriz en Actions.
+- **CI todavía no está validada en GitHub.** El run del 26 de octubre de 2026 terminó antes de ejecutar pasos y no dejó logs ni runner asignado. Las pruebas, el typecheck, el build de la demo y el smoke test sí pasaron localmente en Node 22.23.4; hay que revisar la disponibilidad/configuración de Actions para este repositorio y volver a ejecutar la matriz.
 - **La demo acepta una URL HTTPS o un enlace mailto configurable para su alternativa, pero la variable está vacía.** No existe aún un canal real. Cada aplicación anfitriona debe implementar y probar su alternativa, con sus propios límites, validaciones y autorización.
 - **La demo no guarda envíos.** Para un piloto o producción, conecta `onAccepted` a datos de la aplicación después de validar y autorizar.
-- **No se ha medido la prueba en dispositivos objetivo.** Chrome o Brave identifica el navegador, pero falta elegir los equipos físicos modestos. Reúne al menos 100 soluciones por dispositivo y analiza p95 e interrupciones antes de elegir dificultad.
+- **No se ha medido la prueba en dispositivos objetivo.** Chrome o Brave identifica el navegador, pero falta elegir los equipos físicos modestos. Sigue el [protocolo de medición](performance-validation.md), reúne al menos 100 soluciones por combinación objetivo y analiza p95 e interrupciones antes de elegir dificultad.
 - **La operación de SQLite debe prepararse en el hosting real.** Confirma disco persistente y permisos; programa `behavior-captcha-prune`, define backup/restauración y monitorización, y observa concurrencia/cupo agotado.
 - **El paquete aún no se ha publicado en npm.** La app Next.js temporal instalada desde el tarball compiló localmente; falta CI y verificar el estado externo, nombre/cuenta y versión antes de una publicación.
 - No hay canal privado de reporte de vulnerabilidades definido; consulta [seguridad](security.md).
@@ -34,7 +35,8 @@ Estado al 26 de octubre de 2026. Typecheck, pruebas (9 casos), build de la demo 
 ## Pasos sugeridos para cerrar
 
 1. Resolver la decisión sobre `pnpm-lock.yaml` y actualizar el remoto solo con una reescritura coordinada.
-2. Confirmar que CI pasa en GitHub.
-3. Configurar un canal accesible real y recopilar 100 mediciones por dispositivo físico objetivo en Chrome o Brave.
-4. Preparar el despliegue de SQLite y los controles de observabilidad/retención del servicio.
-5. Confirmar nombre, cuenta, versión, metadatos y artefactos del paquete antes de una publicación npm.
+2. Revisar por qué GitHub Actions no asignó runner al run de `dev` y confirmar que la matriz pasa al volver a ejecutarla.
+3. Configurar una ruta de revisión accesible real en la demo o en la aplicación anfitriona.
+4. Elegir equipos modestos y recopilar 100 soluciones por combinación de dispositivo y navegador siguiendo el protocolo.
+5. Preparar el despliegue de SQLite y los controles de observabilidad/retención del servicio.
+6. Confirmar nombre, cuenta, versión, metadatos y artefactos del paquete antes de una publicación npm.
