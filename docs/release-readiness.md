@@ -9,7 +9,7 @@ Estado al 26 de octubre de 2026. Typecheck, pruebas (9 casos), build de la demo 
 - Demo local con mediciones que permanecen en la pestaña y ejemplo de cancelación del reto.
 - Comando `behavior-captcha-prune` para quitar buckets y nonces vencidos en una ejecución programada.
 - Pruebas automatizadas para replay, cambios del formulario, políticas de reto, límites de entrada, rate limits y persistencia/concurrencia de SQLite.
-- CI configurada para tipos, pruebas, build de la demo y smoke test del tarball en Node 22.13 y 24. El push a `dev` sí la activó, pero ambos jobs terminaron antes del primer paso: GitHub no asignó runner ni generó logs. [Run de Actions](https://github.com/chxchx-dev/chxchx-behavior-captcha/actions/runs/40410532396).
+- CI configurada para tipos, pruebas, build de la demo y smoke test del tarball en Node 22.13 y 24. Los pushes a `dev` la activan, pero los jobs recientes terminan antes del primer paso: GitHub no asigna runner ni genera logs. [Runs de Actions en `dev`](https://github.com/chxchx-dev/chxchx-behavior-captcha/actions?query=branch%3Adev).
 - Smoke test local exitoso: construye el paquete, lo instala en una app Next.js temporal y revisa exports, tipos, CSS, docs y licencia.
 - Protocolo documentado para reunir mediciones locales por dispositivo y navegador; aún faltan los equipos objetivo y los resultados reales.
 - Pasos para ejecutar localmente en el [README](../README.md), documentación de integración y límites de seguridad.
@@ -17,7 +17,7 @@ Estado al 26 de octubre de 2026. Typecheck, pruebas (9 casos), build de la demo 
 
 ## No declarar lista la v1 todavía
 
-- **CI todavía no está validada en GitHub.** El run del 26 de octubre de 2026 terminó antes de ejecutar pasos y no dejó logs ni runner asignado. Las pruebas, el typecheck, el build de la demo y el smoke test sí pasaron localmente en Node 22.23.4; hay que revisar la disponibilidad/configuración de Actions para este repositorio y volver a ejecutar la matriz.
+- **CI todavía no está validada en GitHub.** Los runs del 26 de octubre de 2026 terminaron antes de ejecutar pasos y no dejaron logs ni runner asignado. Las pruebas, el typecheck, el build de la demo y el smoke test sí pasaron localmente en Node 22.23.4; hay que revisar la disponibilidad/configuración de Actions para este repositorio y volver a ejecutar la matriz.
 - **La demo acepta una URL HTTPS o un enlace mailto configurable para su alternativa, pero la variable está vacía.** No existe aún un canal real. Cada aplicación anfitriona debe implementar y probar su alternativa, con sus propios límites, validaciones y autorización.
 - **La demo no guarda envíos.** Para un piloto o producción, conecta `onAccepted` a datos de la aplicación después de validar y autorizar.
 - **No se ha medido la prueba en dispositivos objetivo.** Chrome o Brave identifica el navegador, pero falta elegir los equipos físicos modestos. Sigue el [protocolo de medición](performance-validation.md), reúne al menos 100 soluciones por combinación objetivo y analiza p95 e interrupciones antes de elegir dificultad.
@@ -28,13 +28,14 @@ Estado al 26 de octubre de 2026. Typecheck, pruebas (9 casos), build de la demo 
 ## Revisión antes de hacer público el repositorio
 
 - La búsqueda local y en los commits revisados no encontró formatos comunes de claves privadas, tokens de GitHub/cloud ni cadenas PostgreSQL con credenciales. Es una búsqueda heurística, no garantiza que no haya secretos; haz una revisión final del historial antes de publicar.
-- El historial local de `main` se reescribió con `chxchx-dev <christgg1997@gmail.com>` como identidad de los commits. Ese correo quedará visible. `origin/main` aún apunta a la historia anterior; no publiques el repositorio hasta actualizar el remoto con el historial reescrito. Esto requiere un push forzado coordinado y afecta a clones existentes.
+- El historial remoto de `main` y `dev` ya se actualizó con `--force-with-lease`; el contenido del commit base no cambió y los commits actuales usan `chxchx-dev <christgg1997@gmail.com>`. Ese correo quedará visible. Los clones que tengan la historia anterior deberán resincronizar sus ramas antes de seguir trabajando.
+- El repositorio todavía es privado y no hay un PR abierto. Antes de hacerlo público, confirma la visibilidad deseada y la estrategia para los clones existentes.
 - `pnpm-lock.yaml` aparece sin seguimiento y no contiene un importer para `examples/next-app`; `package-lock.json` sí está en Git y los scripts usan npm. Se dejó intacto; no lo agregues al repositorio sin regenerarlo si se decide adoptar pnpm.
 - Comprueba que la política de privacidad de la aplicación explique los datos que procesan la aplicación, el hosting y sus logs; la base SQLite de la librería no es el único posible lugar de retención.
 
 ## Pasos sugeridos para cerrar
 
-1. Resolver la decisión sobre `pnpm-lock.yaml` y actualizar el remoto solo con una reescritura coordinada.
+1. Decidir qué hacer con el `pnpm-lock.yaml` sin seguimiento; el proyecto usa npm y conserva `package-lock.json`.
 2. Revisar por qué GitHub Actions no asignó runner al run de `dev` y confirmar que la matriz pasa al volver a ejecutarla.
 3. Configurar una ruta de revisión accesible real en la demo o en la aplicación anfitriona.
 4. Elegir equipos modestos y recopilar 100 soluciones por combinación de dispositivo y navegador siguiendo el protocolo.
