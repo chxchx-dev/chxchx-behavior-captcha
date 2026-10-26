@@ -1,12 +1,13 @@
 # Estado de preparación para producción y publicación
 
-Estado al 26 de octubre de 2026. Typecheck, pruebas (8 casos), build de la demo y smoke test del tarball pasaron localmente con Node 22.23.4.
+Estado al 26 de octubre de 2026. Typecheck, pruebas (9 casos), build de la demo y smoke test del tarball pasaron localmente con Node 22.23.4.
 
 ## Ya está en el repositorio
 
 - Código cliente y servidor para telemetría heurística, política `always`/`adaptive`, rate limiting, retos de prueba de trabajo firmados y almacenamiento SQLite/in-memory.
 - Límites de tamaño de entrada en la librería y de cuerpo en la demo de Next.js.
 - Demo local con mediciones que permanecen en la pestaña y ejemplo de cancelación del reto.
+- Comando `behavior-captcha-prune` para quitar buckets y nonces vencidos en una ejecución programada.
 - Pruebas automatizadas para replay, cambios del formulario, políticas de reto, límites de entrada, rate limits y persistencia/concurrencia de SQLite.
 - CI configurada para tipos, pruebas, build de la demo y smoke test del tarball en Node 22.13 y 24; falta que GitHub la ejecute en un push o PR.
 - Smoke test local exitoso: construye el paquete, lo instala en una app Next.js temporal y revisa exports, tipos, CSS, docs y licencia.
@@ -19,7 +20,7 @@ Estado al 26 de octubre de 2026. Typecheck, pruebas (8 casos), build de la demo 
 - **La demo acepta una URL HTTPS o un enlace mailto configurable para su alternativa, pero la variable está vacía.** No existe aún un canal real. Cada aplicación anfitriona debe implementar y probar su alternativa, con sus propios límites, validaciones y autorización.
 - **La demo no guarda envíos.** Para un piloto o producción, conecta `onAccepted` a datos de la aplicación después de validar y autorizar.
 - **No se ha medido la prueba en dispositivos objetivo.** Chrome o Brave identifica el navegador, pero falta elegir los equipos físicos modestos. Reúne al menos 100 soluciones por dispositivo y analiza p95 e interrupciones antes de elegir dificultad.
-- **La operación de SQLite debe prepararse en el hosting real.** Confirma disco persistente, permisos, backup/restauración, limpieza periódica, monitorización y comportamiento ante concurrencia/cupo agotado.
+- **La operación de SQLite debe prepararse en el hosting real.** Confirma disco persistente y permisos; programa `behavior-captcha-prune`, define backup/restauración y monitorización, y observa concurrencia/cupo agotado.
 - **El paquete aún no se ha publicado en npm.** La app Next.js temporal instalada desde el tarball compiló localmente; falta CI y verificar el estado externo, nombre/cuenta y versión antes de una publicación.
 - No hay canal privado de reporte de vulnerabilidades definido; consulta [seguridad](security.md).
 

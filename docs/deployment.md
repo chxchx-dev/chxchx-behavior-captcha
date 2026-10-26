@@ -108,10 +108,14 @@ La demo limita el cuerpo de Server Actions a 128 KiB antes del parseo y la libre
 
 El almacenamiento SQLite está pensado para una aplicación en un solo servidor con disco persistente y tráfico moderado. No compartas un archivo SQLite entre procesos/servidores, volúmenes de red, contenedores efímeros o funciones serverless. Para esas topologías implementa un `RateLimitStore` y un `ChallengeStore` compartidos con operaciones atómicas.
 
-La base conserva buckets de rate limit y nonces consumidos hasta que expiren. Ejecuta periódicamente, desde un proceso confiable, la limpieza:
+La base conserva buckets de rate limit y nonces consumidos hasta que expiren. El paquete incluye el comando `behavior-captcha-prune`; ejecútalo periódicamente desde el scheduler de un proceso confiable. Solo necesita la ruta persistente y `RATE_LIMIT_KEY_HASH_SECRET`:
 
-```ts
-await captchaStore.pruneExpired();
+```bash
+BEHAVIOR_CAPTCHA_DB_PATH=.data/behavior-captcha.sqlite \
+RATE_LIMIT_KEY_HASH_SECRET="$RATE_LIMIT_KEY_HASH_SECRET" \
+node ./node_modules/@chxchx/behavior-captcha/bin/prune-expired.mjs
 ```
 
-Planifica backups, restauración, monitorización de disco y los registros del proxy/framework. La librería no controla las cabeceras o direcciones que otros componentes puedan escribir en sus logs.
+En Windows PowerShell, define esas variables en el entorno del job y ejecuta `node .\node_modules\@chxchx\behavior-captcha\bin\prune-expired.mjs`. El comando imprime únicamente el número de buckets y nonces eliminados. No lo ejecutes por cada solicitud.
+
+Planifica la frecuencia del job, backups, restauración, monitorización de disco y los registros del proxy/framework. La librería no controla las cabeceras o direcciones que otros componentes puedan escribir en sus logs.

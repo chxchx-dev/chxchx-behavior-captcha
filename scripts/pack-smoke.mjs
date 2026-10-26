@@ -53,6 +53,7 @@ try {
     "dist/server/index.d.ts",
     "dist/shared/index.d.ts",
     "dist/client/styles.css",
+    "bin/prune-expired.mjs",
     "docs/deployment.md",
     "docs/security.md",
     "docs/README.md",
@@ -76,10 +77,22 @@ try {
 
   const packageMetadata = JSON.parse(await readFile(join(packageDirectory, "package.json"), "utf8"));
   assert.equal(packageMetadata.license, "MIT");
+  assert.equal(packageMetadata.bin["behavior-captcha-prune"], "./bin/prune-expired.mjs");
   const licenseText = await readFile(join(packageDirectory, "LICENSE"), "utf8");
   assert.match(licenseText, /^MIT License/m);
   assert.match(licenseText, /Copyright \(c\) 2026 chxchx-dev/);
-  console.log("Packed package installed and built in a clean Next.js app; exports, CSS, declarations, docs, and MIT metadata are present.");
+  assert.deepEqual(packageMetadata.bin, { "behavior-captcha-prune": "./bin/prune-expired.mjs" });
+  const pruneOutput = execFileSync(process.execPath, [join(packageDirectory, "bin/prune-expired.mjs")], {
+    cwd: consumerDirectory,
+    encoding: "utf8",
+    env: {
+      ...process.env,
+      BEHAVIOR_CAPTCHA_DB_PATH: join(tempRoot, "prune-smoke.sqlite"),
+      RATE_LIMIT_KEY_HASH_SECRET: "package-smoke-prune-secret-at-least-32-characters",
+    },
+  });
+  assert.deepEqual(JSON.parse(pruneOutput), { rateLimitBuckets: 0, challenges: 0 });
+  console.log("Packed package installed and built in a clean Next.js app; exports, CSS, docs, MIT license, and SQLite cleanup command work.");
 } finally {
   await rm(tempRoot, { recursive: true, force: true });
 }
