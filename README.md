@@ -25,6 +25,7 @@ Los secretos de `.env.example` son marcadores para desarrollo. La demo fuerza un
 ```bash
 npm run demo       # Ejecuta la demo local
 npm run typecheck  # Comprueba los tipos del paquete y el ejemplo
+npm run ci         # Ejecuta localmente las validaciones de CI sin usar runners de GitHub
 npm run build      # Genera el paquete en dist/
 npm run build --workspace examples/next-app # Compila la demo Next.js para producción
 npm test           # Construye y ejecuta las pruebas de seguridad e integración

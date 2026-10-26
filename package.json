@@ -35,6 +35,7 @@
   "files": ["bin", "dist", "README.md", "docs/deployment.md", "docs/security.md"],
   "scripts": {
     "build": "tsc -p tsconfig.build.json && node scripts/copy-assets.mjs",
+    "ci": "npm run typecheck && npm test && npm run build --workspace examples/next-app && npm run pack:smoke",
     "typecheck": "tsc --noEmit",
     "test": "npm run build && node --test tests/*.test.mjs",
     "pack:smoke": "node scripts/pack-smoke.mjs",

@@ -10,6 +10,8 @@ permissions:
 
 jobs:
   validate:
+    # Avoid consuming private-repository Actions minutes; standard runners are free once public.
+    if: github.event.repository.private == false
     name: Node ${{ matrix.node-version }}
     runs-on: ubuntu-latest
     strategy:
