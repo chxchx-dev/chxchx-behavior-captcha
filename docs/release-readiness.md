@@ -9,7 +9,7 @@ Estado al 26 de octubre de 2026. Typecheck, pruebas (9 casos), build de la demo 
 - Demo local con mediciones que permanecen en la pestaña y ejemplo de cancelación del reto.
 - Comando `behavior-captcha-prune` para quitar buckets y nonces vencidos en una ejecución programada.
 - Pruebas automatizadas para replay, cambios del formulario, políticas de reto, límites de entrada, rate limits y persistencia/concurrencia de SQLite.
-- CI configurada para tipos, pruebas, build de la demo y smoke test del tarball en Node 22.13 y 24. Los pushes a `dev` la activan, pero los jobs recientes terminan antes del primer paso: GitHub no asigna runner ni genera logs. [Runs de Actions en `dev`](https://github.com/chxchx-dev/chxchx-behavior-captcha/actions?query=branch%3Adev).
+- CI configurada para tipos, pruebas, build de la demo y smoke test del tarball en Node 22.13 y 24. El run más reciente visible en `dev` terminó antes del primer paso: GitHub no asignó runner ni generó logs; tampoco aparece un run para el commit actual. [Runs de Actions en `dev`](https://github.com/chxchx-dev/chxchx-behavior-captcha/actions?query=branch%3Adev).
 - Smoke test local exitoso: construye el paquete, lo instala en una app Next.js temporal y revisa exports, tipos, CSS, docs y licencia.
 - Protocolo documentado para reunir mediciones locales por dispositivo y navegador; aún faltan los equipos objetivo y los resultados reales.
 - Pasos para ejecutar localmente en el [README](../README.md), documentación de integración y límites de seguridad.
@@ -17,7 +17,7 @@ Estado al 26 de octubre de 2026. Typecheck, pruebas (9 casos), build de la demo 
 
 ## No declarar lista la v1 todavía
 
-- **CI todavía no está validada en GitHub.** Los runs del 26 de octubre de 2026 terminaron antes de ejecutar pasos y no dejaron logs ni runner asignado. Las pruebas, el typecheck, el build de la demo y el smoke test sí pasaron localmente en Node 22.23.4; hay que revisar la disponibilidad/configuración de Actions para este repositorio y volver a ejecutar la matriz.
+- **CI todavía no está validada en GitHub.** Los runs visibles del 26 de octubre de 2026 terminaron antes de ejecutar pasos y no dejaron logs ni runner asignado; el commit más reciente aún no tiene un run visible. Las pruebas, el typecheck, el build de la demo y el smoke test sí pasaron localmente en Node 22.23.4; hay que revisar la disponibilidad/configuración de Actions para este repositorio y volver a ejecutar la matriz.
 - **La demo acepta una URL HTTPS o un enlace mailto configurable para su alternativa, pero la variable está vacía.** No existe aún un canal real. Cada aplicación anfitriona debe implementar y probar su alternativa, con sus propios límites, validaciones y autorización.
 - **La demo no guarda envíos.** Para un piloto o producción, conecta `onAccepted` a datos de la aplicación después de validar y autorizar.
 - **No se ha medido la prueba en dispositivos objetivo.** Chrome o Brave identifica el navegador, pero falta elegir los equipos físicos modestos. Sigue el [protocolo de medición](performance-validation.md), reúne al menos 100 soluciones por combinación objetivo y analiza p95 e interrupciones antes de elegir dificultad.
