@@ -1,6 +1,6 @@
 # Estado de preparación para producción y publicación
 
-Estado al 26 de octubre de 2026. Typecheck, pruebas (9 casos), build de la demo y smoke test del tarball pasaron localmente con Node 22.23.4.
+Estado al 27 de octubre de 2026. `npm run ci` pasó localmente con Node 22.23.4: typecheck, pruebas (9 casos), build de la demo y smoke test del tarball.
 
 ## Ya está en el repositorio
 
@@ -29,14 +29,14 @@ Estado al 26 de octubre de 2026. Typecheck, pruebas (9 casos), build de la demo 
 
 - La búsqueda local y en los commits revisados no encontró formatos comunes de claves privadas, tokens de GitHub/cloud ni cadenas PostgreSQL con credenciales. Es una búsqueda heurística, no garantiza que no haya secretos; haz una revisión final del historial antes de publicar.
 - El historial remoto de `main` y `dev` ya se actualizó con `--force-with-lease`; el contenido del commit base no cambió y los commits actuales usan `chxchx-dev <christgg1997@gmail.com>`. Ese correo quedará visible. Los clones que tengan la historia anterior deberán resincronizar sus ramas antes de seguir trabajando.
-- El repositorio todavía es privado y no hay un PR abierto. Antes de hacerlo público, confirma la visibilidad deseada y la estrategia para los clones existentes.
+- El repositorio todavía es privado. El [PR #1](https://github.com/chxchx-dev/chxchx-behavior-captcha/pull/1) de `dev` hacia `main` está abierto y mergeable; después de revisarlo, fusiónalo antes de decidir cuándo hacer público el repositorio. Los clones anteriores a la reescritura de historial deben resincronizarse.
 - `pnpm-lock.yaml` aparece sin seguimiento y no contiene un importer para `examples/next-app`; `package-lock.json` sí está en Git y los scripts usan npm. Se dejó intacto; no lo agregues al repositorio sin regenerarlo si se decide adoptar pnpm.
 - Comprueba que la política de privacidad de la aplicación explique los datos que procesan la aplicación, el hosting y sus logs; la base SQLite de la librería no es el único posible lugar de retención.
 
 ## Pasos sugeridos para cerrar
 
 1. Decidir qué hacer con el `pnpm-lock.yaml` sin seguimiento; el proyecto usa npm y conserva `package-lock.json`.
-2. Revisar por qué GitHub Actions no asignó runner al run de `dev` y confirmar que la matriz pasa al volver a ejecutarla.
+2. Mientras el repositorio sea privado, validar con `npm run ci`; después de hacerlo público, confirmar que la matriz de GitHub Actions pase en el PR o en `main`.
 3. Configurar una ruta de revisión accesible real en la demo o en la aplicación anfitriona.
 4. Elegir equipos modestos y recopilar 100 soluciones por combinación de dispositivo y navegador siguiendo el protocolo.
 5. Preparar el despliegue de SQLite y los controles de observabilidad/retención del servicio.
