@@ -2,6 +2,19 @@
 
 Usa esta guía antes de cambiar la dificultad o el tiempo máximo del reto. La demo muestra estadísticas locales, pero no conserva los resultados al cerrar o recargar la pestaña.
 
+## Equipo objetivo disponible (aún sin medir)
+
+Perfil detectado el 27 de octubre de 2026:
+
+- Dell Latitude 5400.
+- Windows 10 Pro 22H2, compilación 19045.
+- Intel Core i5-8365U @ 1.60 GHz.
+- Chrome 156.0.8078.49 y Brave 155.1.97.56 instalados; vuelve a anotar la versión usada al medir, porque puede cambiar.
+- Node.js 22.23.4 está instalado con NVM, pero la consola detecta 20.19.5. Ejecuta `nvm use 22.23.4` antes de arrancar la demo, que requiere 22.13 o posterior.
+- RAM: pendiente de confirmar.
+
+Este perfil identifica el equipo, pero todavía no hay mediciones. Completa un lote independiente de al menos 100 soluciones en Chrome y otro en Brave.
+
 ## Preparar una sesión
 
 Registra lo siguiente para cada combinación de dispositivo y navegador:

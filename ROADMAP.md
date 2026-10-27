@@ -16,7 +16,7 @@ Herramienta autoalojada para reducir abuso y spam en formularios públicos. La t
 - [x] Configurar CI para tipos, pruebas y una instalación de humo del paquete desde el tarball.
 - [ ] Completar la purga del historial antiguo alojado en GitHub antes de hacer público el repositorio; los dos runs antiguos se eliminaron y la solicitud de privacidad está pendiente.
 - [ ] Configurar una ruta de revisión accesible real, con límites y revisión propios.
-- [ ] Recopilar al menos 100 soluciones por equipo físico modesto y navegador objetivo antes de ajustar la dificultad; seguir el [protocolo de medición](docs/performance-validation.md).
+- [ ] Recopilar al menos 100 soluciones por navegador en el equipo objetivo actual (Dell Latitude 5400, Windows 10 Pro 22H2) antes de ajustar la dificultad; seguir el [protocolo de medición](docs/performance-validation.md).
 - [ ] Cerrar la operación: limpieza programada de SQLite, privacidad/retención en el hosting y monitorización.
 - [ ] Validar la ejecución de CI en GitHub y decidir si/cuándo publicar el paquete en npm.
 
