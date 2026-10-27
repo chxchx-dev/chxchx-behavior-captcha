@@ -2,7 +2,7 @@
 
 Usa esta guía antes de cambiar la dificultad o el tiempo máximo del reto. La demo muestra estadísticas locales, pero no conserva los resultados al cerrar o recargar la pestaña.
 
-## Equipo objetivo disponible (aún sin medir)
+## Equipo objetivo medido (resultados preliminares)
 
 Perfil detectado el 27 de octubre de 2026:
 
@@ -11,9 +11,29 @@ Perfil detectado el 27 de octubre de 2026:
 - Intel Core i5-8365U @ 1.60 GHz.
 - Chrome 156.0.8078.49 y Brave 155.1.97.56 instalados; vuelve a anotar la versión usada al medir, porque puede cambiar.
 - Node.js 22.23.4 está instalado con NVM, pero la consola detecta 20.19.5. Ejecuta `nvm use 22.23.4` antes de arrancar la demo, que requiere 22.13 o posterior.
-- RAM: pendiente de confirmar.
+- RAM y modo de energía durante el lote: pendientes de confirmar.
 
-Este perfil identifica el equipo, pero todavía no hay mediciones. Completa un lote independiente de al menos 100 soluciones en Chrome y otro en Brave.
+## Lote automatizado del solver (27 de octubre de 2026)
+
+Se ejecutaron 100 soluciones independientes en cada navegador instalado, usando el módulo compilado `dist/client/solveProofOfWork.js`, dificultad de 14 bits y perfiles temporales aislados en modo headless. Para que Chrome y Brave funcionaran en este entorno, el proceso temporal se lanzó con GPU y sandbox desactivados. El tiempo se tomó con `performance.now()` alrededor de cada llamada al solver y se redondeó al milisegundo; la configuración puede diferir del uso normal del navegador.
+
+| Navegador | Versión | Soluciones | Mediana (ms) | p95 (ms) | Mín. (ms) | Máx. (ms) | Errores o timeouts |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Chrome | 156.0.8078.49 | 100 | 515 | 1.959 | 5 | 3.450 | 0 |
+| Brave | 155.1.97.56 | 100 | 524 | 1.699 | 0 | 2.686 | 0 |
+
+El mínimo de 0 ms de Brave corresponde a una muestra redondeada al milisegundo; no significa que el solver tenga coste real cero. El lote mide el cálculo del solver en el motor del navegador. No envió el formulario de la demo ni midió la interacción de una persona, límites de envíos, interrupciones, consumo de energía o comportamiento con la pestaña en segundo plano. La RAM y el modo de energía tampoco se registraron. La sesión reportó presión de memoria y un reinicio de la PC; sin telemetría no se puede atribuir la causa al benchmark. Trata las cifras como preliminares y no ajustes la dificultad con ellas todavía.
+
+## Límites de carga antes de repetir
+
+No repitas ahora los 100 retos completos. Para una futura comprobación en este equipo:
+
+1. Usa el navegador normal con sandbox habilitado y empieza con solo 5 soluciones en un navegador.
+2. Observa en el Administrador de tareas la memoria disponible y el uso de CPU. Detente si la memoria disponible baja de 2 GB, el uso de memoria supera el 85 % de forma sostenida o el equipo empieza a responder lento.
+3. Solo si el piloto termina estable, continúa en bloques de hasta 10 soluciones, un navegador a la vez, con pausas de 30 segundos entre bloques.
+4. No ejecutes lotes en paralelo. Si aparece presión de recursos, cierra únicamente la ventana o el perfil temporal del benchmark y no continúes la sesión.
+
+El lote registrado arriba se ejecutó en modo headless con GPU y sandbox desactivados para sortear restricciones de este entorno; esa configuración no representa una sesión normal y refuerza que los resultados requieran confirmación antes de cambiar la dificultad.
 
 ## Preparar una sesión
 
