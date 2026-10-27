@@ -11,7 +11,7 @@ Estado al 27 de octubre de 2026. `npm run ci` pasó localmente con Node 22.23.4:
 - Pruebas automatizadas para replay, cambios del formulario, políticas de reto, límites de entrada, rate limits y persistencia/concurrencia de SQLite.
 - CI configurada para tipos, pruebas, build de la demo y smoke test del tarball en Node 22.13 y 24. Mientras el repo siga privado, los jobs se saltan antes de asignar runner para no consumir minutos; `npm run ci` ejecuta localmente las mismas comprobaciones. Al hacerlo público, los runners estándar de GitHub podrán ejecutar la matriz sin coste.
 - Smoke test local exitoso: construye el paquete, lo instala en una app Next.js temporal y revisa exports, tipos, CSS, docs y licencia.
-- Protocolo documentado para reunir mediciones locales por dispositivo y navegador; aún faltan los equipos objetivo y los resultados reales.
+- Protocolo documentado y lote automatizado inicial de 100 soluciones en Chrome y Brave para el Dell Latitude 5400; los resultados son preliminares y falta confirmar estabilidad y experiencia interactiva.
 - Pasos para ejecutar localmente en el [README](../README.md), documentación de integración y límites de seguridad.
 - Licencia MIT y metadato `license` del paquete.
 
@@ -21,7 +21,7 @@ Estado al 27 de octubre de 2026. `npm run ci` pasó localmente con Node 22.23.4:
 - **La purga del historial alojado por GitHub sigue pendiente.** `main` y `dev` usan la historia reescrita y el clon local ya no conserva los objetos antiguos. Se eliminaron los dos runs antiguos de Actions, pero el commit histórico todavía responde por SHA en GitHub. Se envió una solicitud de privacidad el 27 de octubre de 2026; no hay número de caso ni respuesta todavía. Mantén el repositorio privado hasta que se resuelva y se verifique que la referencia antigua ya no está disponible.
 - **La demo acepta una URL HTTPS o un enlace mailto configurable para su alternativa, pero la variable está vacía.** No existe aún un canal real. Cada aplicación anfitriona debe implementar y probar su alternativa, con sus propios límites, validaciones y autorización.
 - **La demo no guarda envíos.** Para un piloto o producción, conecta `onAccepted` a datos de la aplicación después de validar y autorizar.
-- **No se ha medido la prueba en dispositivos objetivo.** Chrome o Brave identifica el navegador, pero falta elegir los equipos físicos modestos. Sigue el [protocolo de medición](performance-validation.md), reúne al menos 100 soluciones por combinación objetivo y analiza p95 e interrupciones antes de elegir dificultad.
+- **Falta validar estabilidad y experiencia real antes de ajustar la dificultad.** El lote inicial midió el solver compilado en Chrome y Brave, no la demo interactiva. Después de esa sesión se reportó presión de memoria y reinicio; no se midió RAM ni se puede atribuir la causa. Sigue el [protocolo de medición](performance-validation.md) con un piloto pequeño y monitorización, y registra p95 e interrupciones en la demo.
 - **La operación de SQLite debe prepararse en el hosting real.** Confirma disco persistente y permisos; programa `behavior-captcha-prune`, define backup/restauración y monitorización, y observa concurrencia/cupo agotado.
 - **El paquete aún no se ha publicado en npm.** La app Next.js temporal instalada desde el tarball compiló localmente; falta CI y verificar el estado externo, nombre/cuenta y versión antes de una publicación.
 - No hay canal privado de reporte de vulnerabilidades definido; consulta [seguridad](security.md).
@@ -40,6 +40,6 @@ Estado al 27 de octubre de 2026. `npm run ci` pasó localmente con Node 22.23.4:
 2. Decidir qué hacer con el `pnpm-lock.yaml` sin seguimiento; el proyecto usa npm y conserva `package-lock.json`.
 3. Validar `npm run ci` localmente si cambia código y, una vez despejada la purga y hecho público el repositorio, confirmar la matriz de GitHub Actions.
 4. Configurar una ruta de revisión accesible real en la aplicación anfitriona.
-5. Elegir equipos modestos y recopilar 100 soluciones por combinación de dispositivo y navegador siguiendo el protocolo.
+5. Confirmar el rendimiento en bloques pequeños con monitorización de memoria y validar p95 e interrupciones en la demo antes de ajustar dificultad.
 6. Preparar el despliegue de SQLite y los controles de observabilidad/retención del servicio.
 7. Confirmar nombre, cuenta, versión, metadatos y artefactos del paquete antes de una publicación npm.
