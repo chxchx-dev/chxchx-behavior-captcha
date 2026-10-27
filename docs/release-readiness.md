@@ -29,7 +29,7 @@ Estado al 27 de octubre de 2026. `npm run ci` pasó localmente con Node 22.23.4:
 
 - La búsqueda local y en los commits revisados no encontró formatos comunes de claves privadas, tokens de GitHub/cloud ni cadenas PostgreSQL con credenciales. Es una búsqueda heurística, no garantiza que no haya secretos; haz una revisión final del historial antes de publicar.
 - El historial remoto de `main` y `dev` ya se actualizó con `--force-with-lease`; el contenido del commit base no cambió y los commits actuales usan `chxchx-dev <christgg1997@gmail.com>`. Ese correo quedará visible. Los clones que tengan la historia anterior deberán resincronizar sus ramas antes de seguir trabajando.
-- El repositorio todavía es privado. El [PR #1](https://github.com/chxchx-dev/chxchx-behavior-captcha/pull/1) de `dev` hacia `main` está abierto y mergeable; después de revisarlo, fusiónalo antes de decidir cuándo hacer público el repositorio. Los clones anteriores a la reescritura de historial deben resincronizarse.
+- El repositorio todavía es privado. El [PR #1](https://github.com/chxchx-dev/chxchx-behavior-captcha/pull/1) de `dev` hacia `main` se fusionó el 27 de octubre de 2026. Los clones anteriores a la reescritura de historial deben resincronizarse; hacer público el repositorio queda pendiente de la revisión final.
 - `pnpm-lock.yaml` aparece sin seguimiento y no contiene un importer para `examples/next-app`; `package-lock.json` sí está en Git y los scripts usan npm. Se dejó intacto; no lo agregues al repositorio sin regenerarlo si se decide adoptar pnpm.
 - Comprueba que la política de privacidad de la aplicación explique los datos que procesan la aplicación, el hosting y sus logs; la base SQLite de la librería no es el único posible lugar de retención.
 
