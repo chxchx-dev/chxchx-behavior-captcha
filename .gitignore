@@ -1,6 +1,16 @@
 node_modules/
 .next/
 *.tsbuildinfo
-examples/next-app/.env.local
+# Environment files may contain secrets. Keep only example templates in Git.
+.env
+.env.*
+!.env.example
 .data/
+*.sqlite
+*.sqlite-*
+*.db
 dist/
+# Project npm config may contain registry credentials.
+.npmrc
+.npmrc.*
+!.npmrc.example

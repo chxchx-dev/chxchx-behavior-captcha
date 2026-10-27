@@ -1,0 +1,33 @@
+# Validación de coste de la prueba
+
+Usa esta guía antes de cambiar la dificultad o el tiempo máximo del reto. La demo muestra estadísticas locales, pero no conserva los resultados al cerrar o recargar la pestaña.
+
+## Preparar una sesión
+
+Registra lo siguiente para cada combinación de dispositivo y navegador:
+
+- Fecha y modelo del dispositivo.
+- Sistema operativo y versión.
+- Procesador y memoria RAM, si están disponibles.
+- Chrome o Brave y su versión exacta.
+- Modo de energía y si el equipo está conectado a corriente.
+- Cambios relevantes durante la prueba, como carga alta del sistema o pestaña en segundo plano.
+
+No cambies el código, la configuración de dificultad ni el dispositivo durante un lote. Prueba Chrome y Brave en lotes separados si ambos se van a soportar.
+
+## Ejecutar y registrar resultados
+
+1. Arranca la demo siguiendo el [README](../README.md) y mantén una sola pestaña en primer plano.
+2. Usa datos ficticios; el formulario de demo no guarda los envíos.
+3. Completa retos hasta tener al menos 100 soluciones. La sección **Medición local de coste** muestra el número de soluciones, la mediana, el p95 y el número de interrupciones.
+4. La demo limita los envíos a 10 por minuto. Deja que se reponga el límite entre envíos; si aparece un aviso de límite, espera antes de continuar. Anota las interrupciones y el motivo que muestra el último resultado.
+5. Como la página conserva como máximo 200 muestras en memoria, copia las cifras antes de cerrar o recargar la pestaña.
+6. Repite el lote desde cero para cada dispositivo y navegador; pulsa **Limpiar mediciones** antes de empezar el siguiente.
+
+Plantilla para consolidar resultados:
+
+| Fecha | Dispositivo | Sistema operativo | Navegador/versión | Energía | Soluciones | Mediana (ms) | p95 (ms) | Interrupciones | Motivos/notas |
+| --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | --- |
+|  |  |  |  |  |  |  |  |  |  |
+
+No ajustes la dificultad solo a partir del promedio: revisa p95 e interrupciones por separado y decide primero qué coste máximo es aceptable para las personas usuarias del proyecto.

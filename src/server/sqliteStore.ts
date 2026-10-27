@@ -21,6 +21,7 @@ export interface SQLiteStatement {
 export interface SQLiteDatabase {
   exec(sql: string): void;
   prepare(sql: string): SQLiteStatement;
+  close?(): void;
 }
 
 export interface SQLiteCaptchaStoreOptions {
@@ -157,6 +158,11 @@ export class SQLiteCaptchaStore {
       WHERE expires_at_ms <= ?
     `).run(now).changes;
     return { rateLimitBuckets: Number(rateLimits), challenges: Number(challenges) };
+  }
+
+  /** Close the underlying SQLite connection when this store is no longer needed. */
+  close(): void {
+    this.database.close?.();
   }
 }
 

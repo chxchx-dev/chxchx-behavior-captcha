@@ -25,6 +25,18 @@ interface ProofSample {
   elapsedMs: number;
 }
 
+function getAccessibleFallbackUrl(): string | undefined {
+  const value = process.env.NEXT_PUBLIC_BEHAVIOR_CAPTCHA_ACCESSIBLE_FALLBACK_URL?.trim();
+  if (!value) return undefined;
+
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" || url.protocol === "mailto:" ? url.href : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 function summarizeProofTimes(samples: ProofSample[]) {
   const sorted = samples
     .filter((sample) => sample.outcome === "solved")
@@ -50,6 +62,7 @@ export function ContactForm() {
   >(null);
   const [proofSamples, setProofSamples] = useState<ProofSample[]>([]);
   const proofSummary = summarizeProofTimes(proofSamples);
+  const accessibleFallbackUrl = getAccessibleFallbackUrl();
 
   function recordProofSample(sample: ProofSample) {
     setProofSamples((current) => [...current, sample].slice(-200));
@@ -60,10 +73,18 @@ export function ContactForm() {
       <BehaviorForm
         action={submitContact}
         proofTimeoutMs={15_000}
-        proofFallback={(
+        proofFallback={accessibleFallbackUrl ? (
           <p>
-            Esta demo no tiene una ruta alternativa conectada. En una integración real, ofrece aquí una solicitud de
-            revisión manual o un canal accesible de soporte que mantenga controles de abuso.
+            Si no puedes completar la comprobación, puedes contactar al equipo de soporte por la vía accesible.
+            La solicitud no acepta automáticamente el envío protegido.
+            {" "}<a href={accessibleFallbackUrl}>Contactar con soporte</a>
+          </p>
+        ) : (
+          <p>
+            Esta demo aún no tiene una vía de soporte configurada. Define
+            {" "}<code>NEXT_PUBLIC_BEHAVIOR_CAPTCHA_ACCESSIBLE_FALLBACK_URL</code> con una URL HTTPS o un enlace mailto
+            cuando exista un canal real. La vía de soporte debe aplicar sus propios límites y revisión; no aceptará
+            automáticamente el envío protegido.
           </p>
         )}
         onTelemetry={setTelemetry}

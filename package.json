@@ -1,6 +1,18 @@
 {
   "name": "@chxchx/behavior-captcha",
   "version": "0.1.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chxchx-dev/chxchx-behavior-captcha.git"
+  },
+  "homepage": "https://github.com/chxchx-dev/chxchx-behavior-captcha#readme",
+  "bugs": {
+    "url": "https://github.com/chxchx-dev/chxchx-behavior-captcha/issues"
+  },
+  "bin": {
+    "behavior-captcha-prune": "./bin/prune-expired.mjs"
+  },
   "workspaces": ["examples/next-app"],
   "description": "Self-hosted anti-abuse checks for React and Next.js App Router",
   "type": "module",
@@ -20,10 +32,13 @@
     },
     "./styles.css": "./dist/client/styles.css"
   },
-  "files": ["dist", "README.md"],
+  "files": ["bin", "dist", "README.md", "docs/deployment.md", "docs/security.md"],
   "scripts": {
     "build": "tsc -p tsconfig.build.json && node scripts/copy-assets.mjs",
+    "ci": "npm run typecheck && npm test && npm run build --workspace examples/next-app && npm run pack:smoke",
     "typecheck": "tsc --noEmit",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "pack:smoke": "node scripts/pack-smoke.mjs",
     "demo": "npm run dev --workspace examples/next-app",
     "prepack": "npm run build"
   },

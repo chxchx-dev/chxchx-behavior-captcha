@@ -11,9 +11,13 @@ Herramienta autoalojada para reducir abuso y spam en formularios públicos. La t
 - [x] Cerrar la guía de integración: identidad de cliente confiable, límites de cuerpo antes del parseo, validación y autorización en cada acción.
 - [x] Permitir detener la prueba, limitarla a 15 segundos por defecto, anunciar sus estados y ofrecer una ranura para la alternativa accesible del proyecto anfitrión.
 - [x] Instrumentar en la demo la mediana, el percentil 95 y las interrupciones, con resultados locales por pestaña.
-- [ ] Conectar una ruta de revisión accesible propia y recopilar al menos 100 soluciones por dispositivo modesto objetivo antes de ajustar la dificultad.
-- [ ] Añadir pruebas de seguridad e integración: replay, concurrencia, cambios de formulario, expiración, persistencia y límites.
-- [ ] Cerrar operación y publicación: limpieza programada, política de datos, CI, empaquetado e instalación desde el paquete.
+- [x] Añadir y ejecutar pruebas para replay, concurrencia, cambios del formulario, expiración, persistencia y límites.
+- [x] Distribuir un comando instalable para limpiar registros SQLite vencidos.
+- [x] Configurar CI para tipos, pruebas y una instalación de humo del paquete desde el tarball.
+- [ ] Configurar una ruta de revisión accesible real, con límites y revisión propios.
+- [ ] Recopilar al menos 100 soluciones por equipo físico modesto y navegador objetivo antes de ajustar la dificultad; seguir el [protocolo de medición](docs/performance-validation.md).
+- [ ] Cerrar la operación: limpieza programada de SQLite, privacidad/retención en el hosting y monitorización.
+- [ ] Validar la ejecución de CI en GitHub y decidir si/cuándo publicar el paquete en npm.
 
 ## Criterio de cierre
 
