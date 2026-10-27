@@ -14,6 +14,7 @@ Herramienta autoalojada para reducir abuso y spam en formularios públicos. La t
 - [x] Añadir y ejecutar pruebas para replay, concurrencia, cambios del formulario, expiración, persistencia y límites.
 - [x] Distribuir un comando instalable para limpiar registros SQLite vencidos.
 - [x] Configurar CI para tipos, pruebas y una instalación de humo del paquete desde el tarball.
+- [ ] Completar la purga del historial antiguo alojado en GitHub antes de hacer público el repositorio; los dos runs antiguos se eliminaron y la solicitud de privacidad está pendiente.
 - [ ] Configurar una ruta de revisión accesible real, con límites y revisión propios.
 - [ ] Recopilar al menos 100 soluciones por equipo físico modesto y navegador objetivo antes de ajustar la dificultad; seguir el [protocolo de medición](docs/performance-validation.md).
 - [ ] Cerrar la operación: limpieza programada de SQLite, privacidad/retención en el hosting y monitorización.
